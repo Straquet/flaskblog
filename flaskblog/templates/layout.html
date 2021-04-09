@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='casaka/logo.png')}}">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">-->
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@400;700&display=swap" rel="stylesheet">
+
+    {% if title%}
+    <title>Casaka - {{title}}</title>
+    {% else %}
+    <title>Casaka</title>
+    {% endif %}
+</head>
+
+<body>
+    <header class="site-header mb-lg-5">
+        <nav class="navbar navbar-expand-lg navbar-dark  bg-primary fixed-top">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+                    aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link text-uppercase font-weight-bold"
+                            href="{{ url_for('main.home')}}">Inicio</a>
+                        <a class="nav-item nav-link text-uppercase font-weight-bold"
+                            href="{{ url_for('main.about')}}">About</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-uppercase font-weight-bold" href="#"
+                                id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Categorias
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{url_for('main.apartamento')}}">Apartamento</a>
+                                <a class="dropdown-item" href="{{url_for('main.amoblado')}}">Amoblado</a>
+                                <a class="dropdown-item" href="{{url_for('main.bodega')}}">Bodega</a>
+                                <a class="dropdown-item" href="{{url_for('main.casa')}}">Casa</a>
+                                <a class="dropdown-item" href="{{url_for('main.casa_finca')}}">Casa Finca</a>
+                                <a class="dropdown-item" href="{{url_for('main.consultorio')}}">Consultorio</a>
+                                <a class="dropdown-item" href="{{url_for('main.comercial')}}">Comercial</a>
+                                <a class="dropdown-item" href="{{url_for('main.edificios')}}">Edificio</a>
+                                <a class="dropdown-item" href="{{url_for('main.finca')}}">Finca</a>
+                                <a class="dropdown-item" href="{{url_for('main.local')}}">Local</a>
+                                <a class="dropdown-item" href="{{url_for('main.lote')}}">Lote</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-uppercase font-weight-bold" href="#"
+                                id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Ordenar Precio
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item " href="{{url_for('main.menor_mayor')}}">Menor a Mayor</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{url_for('main.mayor_menor')}}">Mayor a Menor</a>
+                            </div>
+                        </li>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item dropdown mr-lg-5">
+                            <a class="nav-link dropdown-toggle text-uppercase font-weight-bold" href="#"
+                                id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                Cuenta
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item text-uppercase font-weight-bold"
+                                    href="{{ url_for('posts.new_post') }}">Nueva Publicación</a>
+                                <a class="dropdown-item text-uppercase font-weight-bold"
+                                    href="{{ url_for('users.account') }}">Perfil</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-uppercase font-weight-bold"
+                                    href="{{ url_for('users.logout') }}">Cerrar Sesion</a>
+                            </div>
+                        </li>
+                        {% else %}
+                        <a class="nav-item nav-link text-uppercase font-weight-bold"
+                            href="{{ url_for('users.login') }}">Iniciar Sesión</a>
+                        <a class="nav-item nav-link text-uppercase font-weight-bold"
+                            href="{{ url_for('users.register') }}">Registrarse</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main" class="container mt-5">
+        <div class="row">
+            <div class="col mt-5">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </main>
+
+    <div class="card-footer bg-primary">
+        2 days ago
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
